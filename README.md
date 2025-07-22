@@ -13,7 +13,7 @@ Este proyecto conecta una Raspberry Pi a un medidor de consumo eléctrico usando
 - `GET /api/v1/hola` -> Prueba de funcionamiento.
 - `GET /api/v1/datos` -> Devuelve el último mensaje MQTT recibido.
 
-##Cómo configurar
+## Cómo configurar
 
 Cambiar el archivo config.example.js y rellenarlo con las credenciales correctas del Topic y el host del broker MQTT y renombrarlo como config.js
 
