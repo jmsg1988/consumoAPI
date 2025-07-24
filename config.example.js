@@ -7,5 +7,10 @@ module.exports = {
     username: 'usuario',
     password: 'contraseña',
     topic: 'tutopic'
+  },
+  telegram: {
+    bot_token: 'tokenbot',
+    chat_id: 'idchat'
   }
+
 };
