@@ -2,6 +2,7 @@ const mqtt = require('mqtt');
 const config = require('../config');
 const { guardarUltimoMensajeDelDia } = require('../services/registroService');
 const { hayCambioDeDia } = require('./helpers/mqttHelper');
+const { sendPowerAlert } = require('../services/telegramService');
 
 let ultimoMensaje = null;
 
@@ -21,12 +22,14 @@ cliente.on('connect', () => {
 	});
 });
 
-cliente.on('message', (topic, mensaje) => {
+cliente.on('message', async (topic, mensaje) => {
 	let datos;
 	try {
 		datos = JSON.parse(mensaje.toString());
 		console.log(`Datos recibidos:`, datos);
-
+		if(datos?.ENERGY.Power > 3300){
+			await sendPowerAlert(datos?.ENERGY.Power);
+		}
 		//Comprobamos cambio de dia si ya hemos recibido algun mensaje alguna vez
 		if (hayCambioDeDia(datos, ultimoMensaje)) {
 			console.log(`Cambio de día detectado`);
