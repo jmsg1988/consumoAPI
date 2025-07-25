@@ -3,6 +3,7 @@ const config = require('../config');
 const { guardarUltimoMensajeDelDia } = require('../services/registroService');
 const { hayCambioDeDia } = require('./helpers/mqttHelper');
 const { sendPowerAlert } = require('../services/telegramService');
+const {getLimiteConsumo} = require('../services/consumoService');
 
 let ultimoMensaje = null;
 
@@ -27,7 +28,8 @@ cliente.on('message', async (topic, mensaje) => {
 	try {
 		datos = JSON.parse(mensaje.toString());
 		console.log(`Datos recibidos:`, datos);
-		if(datos?.ENERGY.Power > 3300){
+		const limiteConsumo = await getLimiteConsumo();
+		if(datos?.ENERGY.Power > limiteConsumo){
 			await sendPowerAlert(datos?.ENERGY.Power);
 		}
 		//Comprobamos cambio de dia si ya hemos recibido algun mensaje alguna vez
